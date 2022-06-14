@@ -29,6 +29,10 @@ class MainViewModel @Inject constructor(
     private val _onCityListFailedLiveData = MutableLiveData<String>()
     val onCityListFailedLiveData : LiveData<String> = _onCityListFailedLiveData
 
+    init {
+        getCityData()
+    }
+
     fun getCityData() {
         viewModelScope.launch {
             if (commonMethods.isOnline()) {
