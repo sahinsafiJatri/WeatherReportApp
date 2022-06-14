@@ -11,5 +11,4 @@ Uses technology
 #roomDatabase
 #viewBinding
 
-Dont forget to give a star 😊
-Thanks.
+
