@@ -1,9 +1,8 @@
 package com.safi.weather.mainActivity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.safi.weather.databinding.ActivityMainBinding
@@ -25,9 +24,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.getCityData()
         adapter = WeatherAdapter(this)
 
-
         initView()
-        liveDataListener()
+        liveDataObserve()
     }
 
     private fun initView() {
@@ -40,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun liveDataListener() {
+    private fun liveDataObserve() {
 
         viewModel.onProgressLiveData.observe(this) {
             binding.refresh.isRefreshing = it

@@ -55,16 +55,18 @@ class MainViewModel @Inject constructor(
             for (item in list) {
                 val city = WeatherTable(
                     roomID = 0,
-                    id = item.id!!,
-                    name = item.name!!,
-                    description = item.weather!![0].description.toString(),
-                    lat = item.coord?.lat!!,
-                    lon = item.coord?.lon!!,
-                    temp = item.main?.temp!!,
-                    temp_min = item.main?.tempMin!!,
-                    temp_max = item.main?.tempMax!!,
-                    humidity = item.main?.humidity!!,
-                    speed = item.wind?.speed!!
+                    id = item.id?:0,
+                    name = item.name?:"",
+                    description = item.weather?.let {
+                        it[0].description.toString()
+                    }?:"",
+                    lat = item.coord?.lat?:0.0,
+                    lon = item.coord?.lon?:0.0,
+                    temp = item.main?.temp?:0.0,
+                    temp_min = item.main?.tempMin?:0.0,
+                    temp_max = item.main?.tempMax?:0.0,
+                    humidity = item.main?.humidity?:0,
+                    speed = item.wind?.speed?:0.0
                 )
                 roomDataRepo.insertWeather(city)
             }
