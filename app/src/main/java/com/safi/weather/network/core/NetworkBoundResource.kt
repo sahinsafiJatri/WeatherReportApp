@@ -5,40 +5,48 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-abstract class NetworkBoundResource<ResultType> {
-    private val _result = MutableStateFlow<ApiResponse<ResultType>>(ApiResponse.loading(true))
-    val result get() = _result
+class NetworkBoundResource @Inject constructor() {
 
-    init {
-        createApiResponseCallback()
-    }
-
-    private fun createApiResponseCallback() {
-        CoroutineScope(Dispatchers.Main).launch {
-            _result.value = ApiResponse.loading(true)
+    suspend fun<ResultType> downloadData(api : suspend () -> Response<ResultType>) : Flow<ApiResponse<ResultType>> {
+        return withContext(Dispatchers.IO) {
             flow {
-                emit(createCall())
-            }.catch { exception ->
-                _result.value = ApiResponse.failure(
-                    message = message(exception),
-                    code = code(exception))
-                _result.value = ApiResponse.loading(false)
-            }.collect { response ->
-                _result.value = ApiResponse.success(response)
-                _result.value = ApiResponse.loading(false)
+                emit(ApiResponse.Progress(true))
+                val response:Response<ResultType> = api()
+                emit(ApiResponse.Progress(false))
+                try {
+                    if (response.isSuccessful){
+                        response.body()?.let {
+                            emit(ApiResponse.Success(data = it))
+                        }?: emit(ApiResponse.Failure(message = "Unknown error occurred", code = 0))
+                    }else{
+                        emit(ApiResponse.Failure(message = parserErrorBody(response.errorBody()), code = response.code()))
+                    }
+                }catch (e:Exception){
+                    emit(ApiResponse.Failure(message = message(e), code = code(e)))
+                }
             }
         }
     }
 
-    protected abstract suspend fun createCall(): ResultType
-
     private fun code(throwable: Throwable?):Int{
         return if (throwable is HttpException) (throwable).code()
         else  0
+    }
+
+    private fun parserErrorBody(response: ResponseBody?):String{
+        return response?.let {
+            val errorMessage = JsonParser.parseString(it.string()).asJsonObject["message"].asString
+            errorMessage.ifEmpty { "Whoops! Something went wrong" }
+            errorMessage
+        }?:"Unknown error occur, please try again"
     }
 
     private fun message(throwable: Throwable?): String {

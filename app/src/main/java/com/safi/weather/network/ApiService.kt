@@ -1,6 +1,7 @@
 package com.safi.weather.network
 
 import com.safi.weather.mainActivity.dataModel.WeatherModel
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,5 +13,5 @@ interface ApiService {
         @Query("lon") lon: String,
         @Query("cnt") cnt: String,
         @Query("appid") key: String
-    ): WeatherModel
+    ): Response<WeatherModel>
 }
