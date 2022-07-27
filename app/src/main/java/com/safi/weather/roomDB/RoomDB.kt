@@ -1,8 +1,9 @@
-package com.safi.assignment.roomDB
+package com.safi.weather.roomDB
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.safi.assignment.roomDB.tables.WeatherTable
+import com.safi.weather.roomDB.DAO
+import com.safi.weather.roomDB.tables.WeatherTable
 
 @Database(entities = [WeatherTable::class], version = 2)
 abstract class RoomDB : RoomDatabase() {

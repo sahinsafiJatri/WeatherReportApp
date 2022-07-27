@@ -1,4 +1,4 @@
-package com.safi.assignment.roomDB.tables
+package com.safi.weather.roomDB.tables
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

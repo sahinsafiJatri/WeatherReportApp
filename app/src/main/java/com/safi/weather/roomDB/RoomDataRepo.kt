@@ -1,7 +1,6 @@
 package com.safi.weather.roomDB
 
-import com.safi.assignment.roomDB.DAO
-import com.safi.assignment.roomDB.tables.WeatherTable
+import com.safi.weather.roomDB.tables.WeatherTable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

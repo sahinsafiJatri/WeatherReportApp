@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.safi.assignment.roomDB.tables.WeatherTable
+import com.safi.weather.roomDB.tables.WeatherTable
 import com.safi.weather.mainActivity.dataModel.WeatherModel
 import com.safi.weather.network.ServerDataRepo
 import com.safi.weather.network.core.ApiResponse

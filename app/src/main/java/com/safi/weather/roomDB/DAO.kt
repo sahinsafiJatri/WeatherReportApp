@@ -1,9 +1,7 @@
-package com.safi.assignment.roomDB
+package com.safi.weather.roomDB
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.safi.assignment.roomDB.tables.WeatherTable
-import kotlinx.coroutines.flow.Flow
+import com.safi.weather.roomDB.tables.WeatherTable
 
 @Dao
 interface DAO {
